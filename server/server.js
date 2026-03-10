@@ -10,7 +10,10 @@ dotenv.config();
 const app = express();
 
 /* MIDDLEWARE */
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 app.use(express.json());
 
 /* ROUTES */
@@ -27,7 +30,7 @@ const server = http.createServer(app);
 /* SOCKET.IO SETUP */
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
