@@ -1,31 +1,35 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import API from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function CreateAuction() {
 
   const [spiceName, setSpiceName] = useState("");
-  const [startPrice, setStartPrice] = useState("");
+  const [basePrice, setBasePrice] = useState("");
   const [endTime, setEndTime] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+
       await API.post("/auctions", {
         spiceName,
-        startPrice,
+        basePrice: Number(basePrice),
         endTime
       });
 
       alert("Auction Created Successfully");
 
-      setSpiceName("");
-      setStartPrice("");
-      setEndTime("");
+      navigate("/");
 
     } catch (error) {
+
       console.error(error);
       alert("Error creating auction");
+
     }
   };
 
@@ -36,44 +40,27 @@ function CreateAuction() {
 
       <form onSubmit={handleSubmit}>
 
-        <div>
-          <label>Spice Name</label>
-          <br />
-          <input
-            type="text"
-            value={spiceName}
-            onChange={(e) => setSpiceName(e.target.value)}
-            required
-          />
-        </div>
+        <p>Spice Name</p>
+        <input
+          value={spiceName}
+          onChange={(e) => setSpiceName(e.target.value)}
+        />
 
-        <br />
+        <p>Start Price</p>
+        <input
+          type="number"
+          value={basePrice}
+          onChange={(e) => setBasePrice(e.target.value)}
+        />
 
-        <div>
-          <label>Start Price</label>
-          <br />
-          <input
-            type="number"
-            value={startPrice}
-            onChange={(e) => setStartPrice(e.target.value)}
-            required
-          />
-        </div>
+        <p>Auction End Time</p>
+        <input
+          type="datetime-local"
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        />
 
-        <br />
-
-        <div>
-          <label>Auction End Time</label>
-          <br />
-          <input
-            type="datetime-local"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            required
-          />
-        </div>
-
-        <br />
+        <br /><br />
 
         <button type="submit">
           Create Auction
