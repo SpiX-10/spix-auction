@@ -11,23 +11,27 @@ function CreateAuction() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
 
-      await API.post("/auctions", {
-        spiceName,
-        basePrice: Number(basePrice),
-        endTime
+      const res = await API.post("/auctions", {
+        spiceName: spiceName,
+        basePrice: parseInt(basePrice),
+        endTime: endTime
       });
+
+      console.log(res.data);
 
       alert("Auction Created Successfully");
 
       navigate("/");
 
-    } catch (error) {
+    } catch (err) {
 
-      console.error(error);
+      console.log(err.response);
+
       alert("Error creating auction");
 
     }
@@ -43,24 +47,24 @@ function CreateAuction() {
         <p>Spice Name</p>
         <input
           value={spiceName}
-          onChange={(e) => setSpiceName(e.target.value)}
+          onChange={(e)=>setSpiceName(e.target.value)}
         />
 
         <p>Start Price</p>
         <input
           type="number"
           value={basePrice}
-          onChange={(e) => setBasePrice(e.target.value)}
+          onChange={(e)=>setBasePrice(e.target.value)}
         />
 
         <p>Auction End Time</p>
         <input
           type="datetime-local"
           value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
+          onChange={(e)=>setEndTime(e.target.value)}
         />
 
-        <br /><br />
+        <br/><br/>
 
         <button type="submit">
           Create Auction
